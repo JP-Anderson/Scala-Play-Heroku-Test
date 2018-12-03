@@ -7,12 +7,21 @@ import play.api.Play.current
 
 import play.api.db._
 
+import scala.util.Random
+
 object Application extends Controller {
 
+  val fatherTedQuotes = List(
+	"There was... a spider in the bath last night.",
+	"Oh worse than Hitler. You wouldn't find Hitler playing jungle music at three o'clock in the morning!",
+	"It's Irelands biggest lingerie section I understand. I read that... somewhere.",
+	"There’s nothing stupid about football! And there’s nothing at all stupid about the annual All-Priests Five-a-Side over 75s Indoor Football Challenge Match, against Rugged Island!"
+  )
+    
   def index = Action {
-    Ok(views.html.index(null))
+    Ok(views.html.index(fatherTedQuotes(Random.nextInt(fatherTedQuotes.length))))
   }
-
+  
   def db = Action {
     var out = ""
     val conn = DB.getConnection()
