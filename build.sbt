@@ -2,7 +2,7 @@ name := """play-getting-started"""
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, LauncherJarPlugin)
 
 scalaVersion := "2.11.7"
 
