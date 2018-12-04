@@ -11,19 +11,32 @@ import play.api.db._
 import scala.util.Random
 
 object Application extends Controller {
-
-  val fatherTedQuotes = List(
-	"There was... a spider in the bath last night.",
-	"Oh worse than Hitler. You wouldn't find Hitler playing jungle music at three o'clock in the morning!",
-	"It's Irelands biggest lingerie section I understand. I read that... somewhere.",
-	"There’s nothing stupid about football! And there’s nothing at all stupid about the annual All-Priests Five-a-Side over 75s Indoor Football Challenge Match, against Rugged Island!"
-  )
     
   def index = Action {
-    Ok(views.html.index(fatherTedQuotes(Random.nextInt(fatherTedQuotes.length))))
+    var fatherTedQuote = ""
+    val conn = DB.getConnection()
+    try {
+      val stmt = conn.createStatement
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
+
+      val rs = stmt.executeQuery("SELECT quote FROM quotes")
+
+      var quotes =
+      new Iterator[String] {
+        def hasNext = rs.next()
+        def next() = rs.getString("quote")
+      }.toStream
+
+
+      fatherTedQuote += quotes(Random.nextInt(quotes.length))
+
+    } finally {
+      conn.close()
+    }
+    Ok(views.html.index(fatherTedQuote))
   }
-  
-  
+
+
   def putQuote(quoteStr: String) = Action { 
     val conn = DB.getConnection()
     try {
@@ -46,7 +59,7 @@ object Application extends Controller {
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
       
       val rs = stmt.executeQuery("SELECT quote FROM quotes")
-
+      rs.getArray(0)
       while (rs.next) {
         out += "Read from DB: " + rs.getString("quote") + "\n"
       }
