@@ -59,7 +59,6 @@ object Application extends Controller {
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
       
       val rs = stmt.executeQuery("SELECT quote FROM quotes")
-      rs.getArray(0)
       while (rs.next) {
         out += "Read from DB: " + rs.getString("quote") + "\n"
       }
