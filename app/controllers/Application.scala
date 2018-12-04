@@ -29,7 +29,7 @@ object Application extends Controller {
     try {
       val stmt = conn.createStatement
 
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024)")
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
       stmt.executeUpdate(s"INSERT INTO quotes VALUES ('That would be an ecumenical matter.')")
 
     } finally {
