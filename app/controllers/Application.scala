@@ -30,7 +30,7 @@ object Application extends Controller {
       val stmt = conn.createStatement
 
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
-      stmt.executeUpdate(s"INSERT INTO quotes VALUES ('That would be an ecumenical matter.')")
+      stmt.executeUpdate(s"INSERT INTO quotes VALUES ('$quoteStr')")
 
     } finally {
       conn.close()
@@ -43,14 +43,12 @@ object Application extends Controller {
     val conn = DB.getConnection()
     try {
       val stmt = conn.createStatement
-
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)")
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())")
-
-      val rs = stmt.executeQuery("SELECT tick FROM ticks")
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024))")
+      
+      val rs = stmt.executeQuery("SELECT quote FROM quotes")
 
       while (rs.next) {
-        out += "Read from DB: " + rs.getTimestamp("tick") + "\n"
+        out += "Read from DB: " + rs.getString("quote") + "\n"
       }
     } finally {
       conn.close()
