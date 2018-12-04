@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.cache.Cache
 import play.api.Play.current
 
+import play.api.libs.json.Json
 import play.api.db._
 
 import scala.util.Random
@@ -20,6 +21,21 @@ object Application extends Controller {
     
   def index = Action {
     Ok(views.html.index(fatherTedQuotes(Random.nextInt(fatherTedQuotes.length))))
+  }
+  
+  
+  def putQuote(quoteStr: String) = Action { 
+    val conn = DB.getConnection()
+    try {
+      val stmt = conn.createStatement
+
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024)")
+      stmt.executeUpdate(s"INSERT INTO quotes VALUES ($quoteStr)")
+
+    } finally {
+      conn.close()
+    }
+    Ok(quoteStr)
   }
   
   def db = Action {
