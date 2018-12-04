@@ -30,7 +30,7 @@ object Application extends Controller {
       val stmt = conn.createStatement
 
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS quotes (quote VARCHAR(1024)")
-      stmt.executeUpdate(s"INSERT INTO quotes VALUES ($quoteStr)")
+      stmt.executeUpdate(s"INSERT INTO quotes VALUES ('$quoteStr')")
 
     } finally {
       conn.close()
